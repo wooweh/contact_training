@@ -1,41 +1,135 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="styles.css"/>
-    </head>
-    <body>
-        <!-- WELCOME PAGE -->
-        <div id="welcome-page">
-            <div id="welcome-page-container" >
-                <div id="welcome-text">
-                    <h1>Welcome to contact training</h1>
-                    <h3>This exercise helps pc users improve their device navigation and interaction proficiency.</h5>
-                </div>
-                <div id="welcome-instructions">
-                    <h4>Instructions:</h4>
-                    <ol>
-                        <li>Steady your breathing; 3s in, 4s out.</li>
-                        <li>Start the timer.</li>
-                        <li>Prioritize accuracy over speed.</li>
-                        <li>Click the colored dots as fast as you can until the round ends.</li>
-                        <li>Do not reflect on or identify with performance.</li>
-                        <li>Repeat.</li>
-                    </ol>
-                </div>
-                <div id="train-button-container">
-                    <button id="train-button" class="button-base button-train">TRAIN</button>
-                </div>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main id="main-container">
+      <!-- WELCOME -->
+
+      <!-- <div id="welcome">
+          <div id="welcome-container">
+            <div id="welcome-text">
+              <h1>Welcome to contact training</h1>
+              <h3>
+                This exercise helps pc users improve their device navigation and
+                interaction proficiency.
+              </h3>
             </div>
+            <div id="welcome-instructions">
+              <h4>Instructions:</h4>
+              <ol>
+                <li>Steady your breathing; 3s in, 4s out.</li>
+                <li>Start the timer.</li>
+                <li>Prioritize accuracy over speed.</li>
+                <li>
+                  Click the colored dots as fast as you can until the round ends.
+                </li>
+                <li>Do not reflect on or identify with performance.</li>
+                <li>Repeat.</li>
+              </ol>
+            </div>
+            <div id="train-button-container">
+              <button id="train-button" class="button-base button-train">
+                TRAIN
+              </button>
+            </div>
+          </div>
+        </div> -->
+
+      <!-- TRAINING -->
+
+      <div id="training">
+        <!-- HISTORY -->
+        <div id="history">
+          <!-- HEADER -->
+          <div class="section-header">
+            <h2>History</h2>
+            <button id="clear-history" class="button-base">CLEAR</button>
+          </div>
+
+          <!-- LIST -->
+          <div id="history-list-container">
+            <ul id="history-list">
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+              <li>TRAINING RUN 01 - - - - - 25s</li>
+            </ul>
+          </div>
+
+          <!-- CHART -->
+          <div id="history-chart-container">
+            <canvas id="history-chart" />
+          </div>
         </div>
-            
-        <!-- SECTION DESCRIPTION... -->
 
+        <!-- PRACTICE -->
+        <div id="practice">
+          <!-- HEADER -->
+          <div class="section-header">
+            <h2>Practice</h2>
+            <button id="show-instructions" class="button-base">
+              INSTRUCTIONS
+            </button>
+          </div>
 
-        <script src="scripts.js"></script>
-    </body>
+          <!-- CANVAS -->
+          <div id="canvas-container">
+            <canvas id="practice-canvas" />
+          </div>
+
+          <!-- FOOTER -->
+          <div id="practice-footer">
+            <!-- TIMER -->
+            <div id="timer">
+              <h1>TIME:</h1>
+              <h1>30s</h1>
+            </div>
+
+            <!-- START -->
+            <button
+              id="start-practice"
+              class="button-base button-practice centered affirm"
+            >
+              START
+            </button>
+
+            <!-- PAUSE -->
+            <button
+              id="pause-practice"
+              class="button-base button-practice centered warn"
+            >
+              PAUSE
+            </button>
+
+            <!-- PAUSE OPTIONS -->
+            <div id="pause-options">
+              <button
+                id="continue-practice"
+                class="button-base button-practice affirm"
+              >
+                CONTINUE
+              </button>
+              <button
+                id="discard-practice"
+                class="button-base button-practice warn"
+              >
+                DISCARD
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="scripts.js"></script>
+  </body>
 </html>
-
-
-
-

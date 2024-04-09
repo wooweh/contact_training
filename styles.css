@@ -1,83 +1,237 @@
 /* https: //github.com/Colo-Codes/mini-projects/blob/main/todo-app/css/index.css */
-@import url('https://fonts.googleapis.com/css2?family=Fira%20Code:wght@300..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fira%20Code:wght@300..700&display=swap");
 
 :root {
-    --light: #D9D9D9;
-    --medium: #6E7681;
-    --dark: #484F58;
-    --affirm: #58752A;
-    --warn: #E40A0A;
-    --neutral: #AFAFAF;
-    --body: 18px;
-    --subheading: 30px;
-    --heading: 35px;
-
+  --light: #d9d9d9;
+  --medium: #6e7681;
+  --dark: #484f58;
+  --affirm: #58752a;
+  --warn: #e40a0a;
+  --neutral: #afafaf;
+  --body: 18px;
+  --subheading: 30px;
+  --heading: 35px;
 }
 
 html {
-    box-sizing: border-box;
-    font-size: 16px;
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
-/* Background */
+/* BACKGROUND */
 
 body {
-    background: var(--medium);
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    font-family: 'fira code', monospace;
+  background: var(--medium);
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "fira code", monospace;
 }
 
-/* Welcome page */
-
-#welcome-page {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#welcome-page-container {
-    width: 750px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* WELCOME */
+
+#welcome {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#welcome-container {
+  width: 750px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 #train-button-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 #welcome-instructions {
-    box-sizing: border-box;
-    padding-bottom: 75px;
+  box-sizing: border-box;
+  padding-bottom: 75px;
 }
 
-/* Buttons */
+/* TRAINING */
+
+#training {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.section-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: green;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+/* HISTORY */
+
+#history {
+  width: 25%;
+  min-width: 550px;
+  height: 100%;
+  background: blue;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+#history-list-container {
+  width: 100%;
+  height: 60%;
+  min-height: 450px;
+  background: beige;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#history-chart-container {
+  width: 100%;
+  height: 40%;
+  min-height: 250px;
+  background: orange;
+  display: flex;
+}
+
+#history-chart {
+  background: blue;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+
+/* PRACTICE */
+
+#practice {
+  width: 75%;
+  min-width: 800px;
+  height: 100%;
+  background: red;
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+
+#canvas-container {
+  width: 100%;
+  height: 100%;
+  background: yellow;
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+}
+
+#practice-canvas {
+  background: white;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+
+#practice-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: green;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#timer {
+  width: min-content;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px;
+  gap: 20px;
+  box-sizing: border-box;
+  background: green;
+  color: white;
+}
+
+#pause-options {
+  width: min-content;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px;
+  gap: 40px;
+  box-sizing: border-box;
+  background: green;
+  color: white;
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
+}
+
+/* BUTTONS */
 
 .button-base {
-    background-color: var(--neutral);
-    border: none;
-    color: var(--light);
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    width: min-content;
+  background-color: var(--neutral);
+  border: none;
+  color: var(--light);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: min-content;
 }
 
 .button-train {
-    background-color: var(--affirm);
-    font-size: var(--body);
-    width: 250px;
+  background-color: var(--affirm);
+  font-size: var(--body);
+  width: 250px;
 }
 
+.button-practice {
+  font-size: var(--body);
+  width: min-content;
+  padding: 15px 32px;
+  box-sizing: border-box;
+}
 
+.centered {
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
+}
 
-/* Description... */
+.affirm {
+  background-color: var(--affirm);
+}
+
+.warn {
+  background-color: var(--warn);
+}
