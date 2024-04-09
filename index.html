@@ -8,7 +8,7 @@
     <main id="main-container">
       <!-- WELCOME -->
 
-      <!-- <div id="welcome">
+      <div id="welcome">
           <div id="welcome-container">
             <div id="welcome-text">
               <h1>Welcome to contact training</h1>
@@ -36,11 +36,11 @@
               </button>
             </div>
           </div>
-        </div> -->
+        </div>
 
       <!-- TRAINING -->
 
-      <div id="training">
+      <div id="training" class="hide">
         <!-- HISTORY -->
         <div id="history">
           <!-- HEADER -->
@@ -82,8 +82,8 @@
           </div>
 
           <!-- CANVAS -->
-          <div id="canvas-container">
-            <canvas id="practice-canvas" />
+          <div id="board-container">
+            <div id="practice-board"></div>
           </div>
 
           <!-- FOOTER -->
@@ -91,7 +91,7 @@
             <!-- TIMER -->
             <div id="timer">
               <h1>TIME:</h1>
-              <h1>30s</h1>
+              <h1 id="time">30s</h1>
             </div>
 
             <!-- START -->
@@ -105,13 +105,13 @@
             <!-- PAUSE -->
             <button
               id="pause-practice"
-              class="button-base button-practice centered warn"
+              class="button-base button-practice centered warn hide"
             >
               PAUSE
             </button>
 
             <!-- PAUSE OPTIONS -->
-            <div id="pause-options">
+            <div id="pause-options" class="hide">
               <button
                 id="continue-practice"
                 class="button-base button-practice affirm"
