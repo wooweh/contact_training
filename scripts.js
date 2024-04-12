@@ -22,7 +22,7 @@ const history = getStorage("history");
 
 // Application state
 const state = {
-  time: 5,
+  time: 30,
   isPaused: false,
   isPracticing: false,
   interval: 0,
@@ -68,6 +68,8 @@ const welcomeToggleCheckbox = document.getElementById(
   "welcome-toggle-checkbox"
 );
 const welcomeToggleLabel = document.getElementById("welcome-toggle-label");
+const chartUpperYVal = document.getElementById("chart-y-upper");
+const chartlowerYVal = document.getElementById("chart-y-lower");
 
 const welcomeToggle = document.getElementById("welcome-toggle");
 const trainButton = document.getElementById("train-button");
@@ -194,8 +196,8 @@ function saveToHistory() {
   const history = getState("history");
   const pClicks = getState("practiceClicks");
   const sClicks = getState("successClicks");
-  const accuracy = `${Math.floor((sClicks / pClicks) * 100)}%`;
-  const result = `${sClicks} Clicks, ${accuracy} Accuracy`;
+  const accuracy = Math.floor((sClicks / pClicks) * 100);
+  const result = [sClicks, accuracy];
 
   if (history.length > 9) history.splice(9);
   const newHistory = [...history];
@@ -225,9 +227,10 @@ function resetPractice() {
   setTime(30);
 }
 
-function addHistoryItem(val) {
+function addHistoryItem(result) {
+  const resultText = getResultText(result);
   const child = document.createElement("li");
-  child.innerHTML = val;
+  child.innerHTML = resultText;
   const firstChild = historyList.firstChild;
   historyList.insertBefore(child, firstChild);
 }
@@ -246,12 +249,6 @@ function setTime(seconds) {
   time.innerHTML = seconds + "s";
 }
 
-// Utility functions
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 function drawDot() {
   clearDot();
   const { x, y } = getRandomXY();
@@ -266,6 +263,28 @@ function drawDot() {
   practiceBoard.appendChild(dot);
 }
 
+function clearDot() {
+  const dot = document.getElementById("practice-dot");
+  if (!!dot) dot.remove();
+}
+
+function paintHistoryChart(history) {
+  // take history array
+  // for each item in history
+  // if higher than highest score, make highest
+  // if lower than lowest score, make lowest
+  // for each item in history
+  // create a chart point container
+  // create a chart point
+  // set chart point bottom to % of where its val lies relative to the highest and lowest scores
+}
+
+// Utility functions
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 function getRandomColor() {
   return COLORS[getRandomInt(COLORS.length)];
 }
@@ -277,17 +296,16 @@ function getRandomXY() {
   };
 }
 
-function clearDot() {
-  const dot = document.getElementById("practice-dot");
-  if (!!dot) dot.remove();
-}
-
 function getBoardXY(event) {
   const rect = practiceBoard.getBoundingClientRect();
   return {
     x: event.clientX - rect.left,
     y: event.clientY - rect.top,
   };
+}
+
+function getResultText(result) {
+  return `${result[0]} Clicks, ${result[1]}% Accuracy`;
 }
 
 // Initial setup
@@ -305,9 +323,9 @@ if (!!history && !!history.length) {
   if (history.length > 10) history.splice(10);
   setState("history", history);
 
-  history.forEach((item) => {
+  history.forEach((result) => {
     const child = document.createElement("li");
-    child.innerHTML = item;
+    child.innerHTML = getResultText(result);
     historyList.appendChild(child);
   });
 }
