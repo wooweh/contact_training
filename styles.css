@@ -198,6 +198,7 @@ main {
   height: 100%;
   position: relative;
   width: 20px;
+  overflow: hidden;
 }
 
 .chart-point {

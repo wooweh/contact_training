@@ -22,7 +22,7 @@ const history = getStorage("history");
 
 // Application state
 const state = {
-  time: 30,
+  time: 5,
   isPaused: false,
   isPracticing: false,
   interval: 0,
@@ -68,8 +68,9 @@ const welcomeToggleCheckbox = document.getElementById(
   "welcome-toggle-checkbox"
 );
 const welcomeToggleLabel = document.getElementById("welcome-toggle-label");
+const historyChart = document.getElementById("history-chart");
 const chartUpperYVal = document.getElementById("chart-y-upper");
-const chartlowerYVal = document.getElementById("chart-y-lower");
+const chartLowerYVal = document.getElementById("chart-y-lower");
 
 const welcomeToggle = document.getElementById("welcome-toggle");
 const trainButton = document.getElementById("train-button");
@@ -201,9 +202,10 @@ function saveToHistory() {
 
   if (history.length > 9) history.splice(9);
   const newHistory = [...history];
-  newHistory.unshift(result);
+  newHistory.push(result);
 
   addHistoryItem(result);
+  paintHistoryChart(newHistory);
   setStorage("history", newHistory);
   setState("history", newHistory);
   resetPractice();
@@ -269,17 +271,55 @@ function clearDot() {
 }
 
 function paintHistoryChart(history) {
-  // take history array
-  // for each item in history
-  // if higher than highest score, make highest
-  // if lower than lowest score, make lowest
-  // for each item in history
-  // create a chart point container
-  // create a chart point
-  // set chart point bottom to % of where its val lies relative to the highest and lowest scores
+  console.log(history);
+  let highest = 0;
+  let lowest = Infinity;
+
+  history.forEach((result) => {
+    if (result[0] > highest) highest = result[0];
+    if (result[0] < lowest) lowest = result[0];
+  });
+
+  while (historyChart.hasChildNodes()) {
+    historyChart.removeChild(historyChart.firstChild);
+  }
+
+  chartUpperYVal.innerHTML = highest;
+  chartLowerYVal.innerHTML = lowest;
+
+  history.forEach((result) => {
+    const chartPointContainer = document.createElement("div");
+    chartPointContainer.classList.add("chart-point-container");
+
+    const chartPoint = document.createElement("div");
+    chartPoint.classList.add("chart-point");
+    const bottomPercentage = getChartPointBottom(result[0], lowest, highest);
+    console.log(bottomPercentage);
+    chartPoint.style.bottom = bottomPercentage;
+
+    chartPointContainer.appendChild(chartPoint);
+    historyChart.appendChild(chartPointContainer);
+  });
+}
+
+function createHistoryList(history) {
+  history.forEach((result) => {
+    const child = document.createElement("li");
+    child.innerHTML = getResultText(result);
+    historyList.appendChild(child);
+  });
 }
 
 // Utility functions
+
+function getChartPointBottom(clicks, lowest, highest) {
+  const clicksDiff = clicks - lowest;
+  const totalDiff = highest - lowest;
+  if (totalDiff === 0) return `calc(100% - 30px)`;
+
+  const pcnt = (100 * clicksDiff) / totalDiff;
+  return `calc(${pcnt}% - ${(40 * pcnt) / 100 - 10}px)`;
+}
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -322,10 +362,6 @@ if (hideWelcome !== null) {
 if (!!history && !!history.length) {
   if (history.length > 10) history.splice(10);
   setState("history", history);
-
-  history.forEach((result) => {
-    const child = document.createElement("li");
-    child.innerHTML = getResultText(result);
-    historyList.appendChild(child);
-  });
+  createHistoryList(history);
+  paintHistoryChart(history);
 }
