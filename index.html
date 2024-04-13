@@ -17,9 +17,9 @@
           </label>
         </div>
         <div id="welcome-container">
-          <div id="welcome-text">
-            <h1>Welcome to contact training</h1>
-            <h3>
+          <div>
+            <h1 id="welcome-heading">Welcome to contact training</h1>
+            <h3 id="welcome-sub-heading">
               This exercise helps pc users improve their device navigation and
               interaction proficiency.
             </h3>
@@ -49,7 +49,10 @@
 
       <div id="training" class="hide">
         <!-- HISTORY -->
-        <div id="history">
+        <div id="history-bar">
+          <h2 id="history-bar-label">Show History</h2>
+        </div>
+        <div id="history" class="collapse">
           <!-- HEADER -->
           <div class="section-header">
             <h2>History</h2>
@@ -95,8 +98,10 @@
             <!-- TIMER -->
             <div id="timer">
               <h1>TIME:</h1>
-              <h1 id="time">30s</h1>
+              <h1 id="time"></h1>
             </div>
+
+            <h3 id="hotkey-prompt">[spacebar to start/stop]</h3>
 
             <!-- START -->
             <button

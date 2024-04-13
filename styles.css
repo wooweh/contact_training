@@ -16,12 +16,15 @@
 html {
   box-sizing: border-box;
   font-size: 16px;
+  display: inline-block;
+  text-align: initial;
 }
 
 /* BACKGROUND */
 
 body {
-  background: var(--medium);
+  background: var(--dark);
+  color: var(--light);
   height: 100vh;
   margin: 0;
   padding: 0;
@@ -29,12 +32,11 @@ body {
 }
 
 main {
-  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  overflow: hidden;
 }
 
 .hide {
@@ -49,7 +51,10 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+}
+
+#welcome-toggle-label {
+  color: var(--light);
 }
 
 #welcome-container {
@@ -57,6 +62,14 @@ main {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+#welcome-heading {
+  color: var(--light);
+}
+
+#welcome-sub-heading {
+  color: var(--medium);
 }
 
 #train-button-container {
@@ -77,7 +90,7 @@ main {
   height: 100%;
   display: flex;
   flex-direction: row;
-  position: absolute;
+  justify-content: flex-end;
 }
 
 .section-header {
@@ -86,28 +99,54 @@ main {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background: green;
-  padding: 10px 20px;
+  background: black;
+  color: var(--medium);
+  padding: 10px 40px;
   box-sizing: border-box;
 }
 
 /* HISTORY */
 
+#history-bar {
+  height: 100%;
+  width: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+#history-bar-label {
+  transform: rotate(-90deg);
+  text-wrap: nowrap;
+  color: var(--medium);
+}
+
 #history {
   width: 25%;
-  min-width: 550px;
+  min-width: 590px;
   height: 100%;
-  background: blue;
   display: flex;
   flex-direction: column;
   flex: 1;
+  background: black;
+  padding-right: 20px;
+}
+
+.collapse {
+  width: 50px !important;
+  display: none !important;
 }
 
 #history-list-container {
   width: 100%;
   height: 60%;
   min-height: 450px;
-  background: beige;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -118,23 +157,21 @@ main {
   gap: 20px;
 }
 
+/* HISTORY CHART */
+
 #history-chart-container {
   width: 100%;
   height: 40%;
   min-height: 250px;
-  background: orange;
   display: flex;
   position: relative;
   flex-direction: row;
 }
 
-/* HISTORY CHART */
-
 #chart-x-axis {
   width: calc(100% - 40px);
   height: 40px;
   position: absolute;
-  border-top: 3px solid black;
   bottom: 0;
   right: 0;
   display: flex;
@@ -146,12 +183,13 @@ main {
   width: 40px;
   height: calc(100% - 40px);
   position: absolute;
-  border-right: 3px solid black;
-  left: 0;
+  left: 40;
   top: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
 }
 
 .chart-axis-val {
@@ -163,7 +201,6 @@ main {
 }
 
 #chart-y-label {
-  width: 100%;
   display: flex;
   justify-content: center;
   flex: 1;
@@ -180,7 +217,6 @@ main {
 }
 
 #history-chart {
-  background: blue;
   width: calc(100% - 40px);
   height: calc(100% - 40px);
   flex: 1;
@@ -192,6 +228,7 @@ main {
   position: absolute;
   top: 0;
   right: 0;
+  background: var(--medium);
 }
 
 .chart-point-container {
@@ -205,36 +242,36 @@ main {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  background: yellow;
+  background: var(--light);
   position: absolute;
 }
 
 /* PRACTICE */
 
 #practice {
-  width: 75%;
-  min-width: 800px;
+  width: calc(100% - 50px);
+  min-width: 700px;
   height: 100%;
-  background: red;
   display: flex;
   flex-direction: column;
-  flex: 2;
+  padding-right: 40px;
+  box-sizing: border-box;
+  background: black;
 }
 
 #board-container {
   width: 100%;
   height: 100%;
-  background: yellow;
   flex: 1;
   padding: 20px;
   display: flex;
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
+  background: var(--light);
 }
 
 #practice-board {
-  background: white;
   position: relative;
   width: 100%;
   height: 100%;
@@ -247,9 +284,9 @@ main {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background: green;
   padding: 10px 20px;
   box-sizing: border-box;
+  background: black;
   position: relative;
 }
 
@@ -260,8 +297,11 @@ main {
   padding: 10px 20px;
   gap: 20px;
   box-sizing: border-box;
-  background: green;
-  color: white;
+  color: var(--medium);
+}
+
+#hotkey-prompt {
+  color: var(--medium);
 }
 
 #pause-options {
@@ -271,8 +311,7 @@ main {
   padding: 10px 20px;
   gap: 40px;
   box-sizing: border-box;
-  background: green;
-  color: white;
+  color: var(--light);
   position: absolute;
   right: 50%;
   transform: translateX(50%);
@@ -280,7 +319,7 @@ main {
 
 .dot {
   position: absolute;
-  outline: 1px black;
+  outline: 2px black;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -291,7 +330,7 @@ main {
 /* BUTTONS */
 
 .button-base {
-  background-color: var(--neutral);
+  background-color: var(--dark);
   border: none;
   color: var(--light);
   padding: 15px 32px;
@@ -355,14 +394,12 @@ main {
   height: 34px;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;

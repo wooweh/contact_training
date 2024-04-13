@@ -1,32 +1,21 @@
 "use strict";
-// https://github.com/Colo-Codes/mini-projects/blob/main/todo-app/js/index.js
-
-// Drawing board
-
-// click start
-// dot appears
-
-// click dot
-// current score + 1
-// dot changes position
-// time === 0
-// score saved to history
-// practice report appears
 
 // Constants
 
 const COLORS = ["red", "green", "blue", "yellow", "purple", "orange"];
 
 const hideWelcome = getStorage("hideWelcome");
-const history = getStorage("history");
+const historyStorage = getStorage("history");
+
+const TIME = 15;
 
 // Application state
 const state = {
-  time: 5,
-  isPaused: false,
-  isPracticing: false,
-  interval: 0,
+  time: TIME,
   hideWelcome: false,
+  isPracticing: false,
+  isPaused: false,
+  interval: 0,
   practiceClicks: 0,
   successClicks: 0,
   history: [],
@@ -60,6 +49,8 @@ function getStorage(key) {
 
 const welcome = document.getElementById("welcome");
 const training = document.getElementById("training");
+const historySideBar = document.getElementById("history");
+const historyBar = document.getElementById("history-bar");
 const time = document.getElementById("time");
 const pauseOptions = document.getElementById("pause-options");
 const historyList = document.getElementById("history-list");
@@ -93,6 +84,8 @@ discardButton.addEventListener("click", resetPractice);
 clearHistoryButton.addEventListener("click", clearHistory);
 practiceBoard.addEventListener("click", (e) => practiceClick(e));
 document.addEventListener("keydown", (e) => practiceSpacebar(e));
+historySideBar.addEventListener("mouseleave", () => collapseSideBar());
+historyBar.addEventListener("mouseenter", () => expandSideBar());
 
 // Event handlers
 let isProcessing = false;
@@ -111,7 +104,7 @@ function colorToggleLabel(shouldColor) {
   if (shouldColor) {
     welcomeToggleLabel.style.color = "#2196f3";
   } else {
-    welcomeToggleLabel.style.color = "black";
+    welcomeToggleLabel.style.color = "#d9d9d9";
   }
 }
 
@@ -150,9 +143,9 @@ function startTimer() {
       setTime(remainingTime - 1);
     } else {
       clearInterval(interval);
-      setState("time", 30);
+      setState("time", TIME);
       clearDot();
-      setTime(30);
+      setTime(TIME);
       saveToHistory();
     }
   }, 1000);
@@ -193,11 +186,12 @@ function successClick() {
     drawDot();
   }
 }
+
 function saveToHistory() {
   const history = getState("history");
   const pClicks = getState("practiceClicks");
   const sClicks = getState("successClicks");
-  const accuracy = Math.floor((sClicks / pClicks) * 100);
+  const accuracy = pClicks > 0 ? Math.floor((sClicks / pClicks) * 100) : 0;
   const result = [sClicks, accuracy];
 
   if (history.length > 9) history.splice(9);
@@ -217,6 +211,9 @@ function clearHistory() {
   while (historyList.firstChild) {
     historyList.removeChild(historyList.firstChild);
   }
+  while (historyChart.firstChild) {
+    historyChart.removeChild(historyChart.firstChild);
+  }
 }
 
 function resetPractice() {
@@ -225,16 +222,15 @@ function resetPractice() {
   hide(pauseOptions);
   setState("practiceClicks", 0);
   setState("successClicks", 0);
-  setState("time", 30);
-  setTime(30);
+  setState("time", TIME);
+  setTime(TIME);
 }
 
 function addHistoryItem(result) {
   const resultText = getResultText(result);
   const child = document.createElement("li");
   child.innerHTML = resultText;
-  const firstChild = historyList.firstChild;
-  historyList.insertBefore(child, firstChild);
+  historyList.insertBefore(child, historyList.firstChild);
 }
 
 // Event handler bindings
@@ -247,6 +243,16 @@ function hide(el) {
   el.classList.add("hide");
 }
 
+function collapseSideBar() {
+  historySideBar.classList.add("collapse");
+  historyBar.classList.remove("hide");
+}
+
+function expandSideBar() {
+  historySideBar.classList.remove("collapse");
+  historyBar.classList.add("hide");
+}
+
 function setTime(seconds) {
   time.innerHTML = seconds + "s";
 }
@@ -257,7 +263,6 @@ function drawDot() {
   const dot = document.createElement("div");
   dot.id = "practice-dot";
   dot.classList.add("dot");
-  dot.style.position = "absolute";
   dot.style.left = x + "px";
   dot.style.top = y + "px";
   dot.style.backgroundColor = getRandomColor();
@@ -271,7 +276,6 @@ function clearDot() {
 }
 
 function paintHistoryChart(history) {
-  console.log(history);
   let highest = 0;
   let lowest = Infinity;
 
@@ -285,7 +289,11 @@ function paintHistoryChart(history) {
   }
 
   chartUpperYVal.innerHTML = highest;
-  chartLowerYVal.innerHTML = lowest;
+  if (highest === lowest) {
+    chartLowerYVal.innerHTML = 0;
+  } else {
+    chartLowerYVal.innerHTML = lowest;
+  }
 
   history.forEach((result) => {
     const chartPointContainer = document.createElement("div");
@@ -294,7 +302,6 @@ function paintHistoryChart(history) {
     const chartPoint = document.createElement("div");
     chartPoint.classList.add("chart-point");
     const bottomPercentage = getChartPointBottom(result[0], lowest, highest);
-    console.log(bottomPercentage);
     chartPoint.style.bottom = bottomPercentage;
 
     chartPointContainer.appendChild(chartPoint);
@@ -306,7 +313,7 @@ function createHistoryList(history) {
   history.forEach((result) => {
     const child = document.createElement("li");
     child.innerHTML = getResultText(result);
-    historyList.appendChild(child);
+    historyList.insertBefore(child, historyList.firstChild);
   });
 }
 
@@ -349,6 +356,9 @@ function getResultText(result) {
 }
 
 // Initial setup
+
+time.innerHTML = `${TIME}s`;
+
 if (hideWelcome !== null) {
   setState("hideWelcome", hideWelcome);
   colorToggleLabel(hideWelcome);
@@ -361,7 +371,7 @@ if (hideWelcome !== null) {
 
 if (!!history && !!history.length) {
   if (history.length > 10) history.splice(10);
-  setState("history", history);
-  createHistoryList(history);
-  paintHistoryChart(history);
+  setState("history", historyStorage);
+  createHistoryList(historyStorage);
+  paintHistoryChart(historyStorage);
 }
