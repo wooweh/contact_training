@@ -89,6 +89,11 @@ historyBar.addEventListener("mouseenter", () => expandSideBar());
 
 // Event handlers
 let isProcessing = false;
+/**
+ * Toggles the visibility of the welcome page.
+ *
+ * @return {undefined} No return value.
+ */
 function toggleWelcome() {
   if (isProcessing) {
     const newState = !getState("hideWelcome");
@@ -100,6 +105,12 @@ function toggleWelcome() {
   setTimeout(() => (isProcessing = false), 50);
 }
 
+/**
+ * Toggles the color of the welcome toggle label.
+ *
+ * @param {boolean} shouldColor - Determines whether the label should be colored or not.
+ * @return {void} This function does not return a value.
+ */
 function colorToggleLabel(shouldColor) {
   if (shouldColor) {
     welcomeToggleLabel.style.color = "#2196f3";
@@ -108,16 +119,31 @@ function colorToggleLabel(shouldColor) {
   }
 }
 
+/**
+ * Shows the training page and hides the welcome page.
+ *
+ * @return {void} This function does not return a value.
+ */
 function startTraining() {
   hide(welcome);
   show(training);
 }
 
+/**
+ * Shows the welcome page and hides the training page.
+ *
+ * @return {void} This function does not return a value.
+ */
 function showInstructions() {
   show(welcome);
   hide(training);
 }
 
+/**
+ * Starts the practice session, timer and draws a dot.
+ *
+ * @return {void} This function does not return a value.
+ */
 function startPractice() {
   setState("isPracticing", true);
   setState("isPaused", false);
@@ -128,6 +154,11 @@ function startPractice() {
   drawDot();
 }
 
+/**
+ * Pauses the practice session and timer.
+ *
+ * @return {void} This function does not return a value.
+ */
 function pausePractice() {
   setState("isPaused", true);
   pauseTimer();
@@ -135,6 +166,11 @@ function pausePractice() {
   show(pauseOptions);
 }
 
+/**
+ * Starts a timer that counts down from a given time interval.
+ *
+ * @return {void} This function does not return a value.
+ */
 function startTimer() {
   const interval = setInterval(() => {
     const remainingTime = getState("time");
@@ -146,6 +182,7 @@ function startTimer() {
       setState("time", TIME);
       clearDot();
       setTime(TIME);
+      setState("isPracticing", false);
       saveToHistory();
     }
   }, 1000);
@@ -153,11 +190,22 @@ function startTimer() {
   setState("interval", interval);
 }
 
+/**
+ * Pauses the timer by clearing the interval.
+ *
+ * @return {void} This function does not return a value.
+ */
 function pauseTimer() {
   const interval = getState("interval");
   clearInterval(interval);
 }
 
+/**
+ * Handles the spacebar key press event during practice to toggle pause and start.
+ *
+ * @param {Event} e - The key press event object.
+ * @return {void} This function does not return a value.
+ */
 function practiceSpacebar(e) {
   const isPracticing = getState("isPracticing");
   const isPaused = getState("isPaused");
@@ -170,7 +218,12 @@ function practiceSpacebar(e) {
   }
 }
 
-function practiceClick(e) {
+/**
+ * Increments the practice clicks count if the user is currently practicing.
+ *
+ * @return {void} This function does not return a value.
+ */
+function practiceClick() {
   const isPracticing = getState("isPracticing");
   const pClicks = getState("practiceClicks");
   if (isPracticing) {
@@ -178,6 +231,11 @@ function practiceClick(e) {
   }
 }
 
+/**
+ * Increments the success clicks count and draws the next dot if the user is practicing.
+ *
+ * @return {void} This function does not return anything.
+ */
 function successClick() {
   const isPracticing = getState("isPracticing");
   const sClicks = getState("successClicks");
@@ -187,6 +245,11 @@ function successClick() {
   }
 }
 
+/**
+ * Saves the current training session results to history and resets the practice.
+ *
+ * @return {void}
+ */
 function saveToHistory() {
   const history = getState("history");
   const pClicks = getState("practiceClicks");
@@ -194,17 +257,23 @@ function saveToHistory() {
   const accuracy = pClicks > 0 ? Math.floor((sClicks / pClicks) * 100) : 0;
   const result = [sClicks, accuracy];
 
-  if (history.length > 9) history.splice(9);
-  const newHistory = [...history];
-  newHistory.push(result);
-
-  addHistoryItem(result);
+  if (history.length > 9) {
+    while (history.length > 9) history.shift();
+  }
+  const newHistory = [...history].push(result);
+  clearHistory();
+  createHistoryList(newHistory);
   paintHistoryChart(newHistory);
   setStorage("history", newHistory);
   setState("history", newHistory);
   resetPractice();
 }
 
+/**
+ * Clears the history state, storage, list and chart.
+ *
+ * @return {void}
+ */
 function clearHistory() {
   setState("history", []);
   setStorage("history", []);
@@ -216,6 +285,11 @@ function clearHistory() {
   }
 }
 
+/**
+ * Resets the practice session.
+ *
+ * @return {void} This function does not return a value.
+ */
 function resetPractice() {
   show(startButton);
   hide(pauseButton);
@@ -226,37 +300,62 @@ function resetPractice() {
   setTime(TIME);
 }
 
-function addHistoryItem(result) {
-  const resultText = getResultText(result);
-  const child = document.createElement("li");
-  child.innerHTML = resultText;
-  historyList.insertBefore(child, historyList.firstChild);
-}
-
 // Event handler bindings
 
+/**
+ * Shows the specified element.
+ *
+ * @param {Element} el - The element to be shown.
+ * @return {void} This function does not return a value.
+ */
 function show(el) {
   el.classList.remove("hide");
 }
 
+/**
+ * Hides the specified element.
+ *
+ * @param {HTMLElement} el - The element to hide.
+ * @return {void} This function does not return a value.
+ */
 function hide(el) {
   el.classList.add("hide");
 }
 
+/**
+ * Collapses the sidebar.
+ *
+ * @return {void} This function does not return a value.
+ */
 function collapseSideBar() {
   historySideBar.classList.add("collapse");
   historyBar.classList.remove("hide");
 }
 
+/**
+ * Expands the sidebar.
+ *
+ */
 function expandSideBar() {
   historySideBar.classList.remove("collapse");
   historyBar.classList.add("hide");
 }
 
+/**
+ * Sets the seconds value in the timer.
+ *
+ * @param {number} seconds - The number of seconds to display.
+ * @return {void} This function does not return a value.
+ */
 function setTime(seconds) {
   time.innerHTML = seconds + "s";
 }
 
+/**
+ * Draws a dot on the practice board at a random position with a random color.
+ *
+ * @return {void} This function does not return a value.
+ */
 function drawDot() {
   clearDot();
   const { x, y } = getRandomXY();
@@ -270,11 +369,22 @@ function drawDot() {
   practiceBoard.appendChild(dot);
 }
 
+/**
+ * Clears the dot from the practice board.
+ *
+ * @return {void} This function does not return a value.
+ */
 function clearDot() {
   const dot = document.getElementById("practice-dot");
   if (!!dot) dot.remove();
 }
 
+/**
+ * Creates a history chart in the sidebar.
+ *
+ * @param {Array} history - The history data to be visualized.
+ * @return {void} This function does not return a value.
+ */
 function paintHistoryChart(history) {
   let highest = 0;
   let lowest = Infinity;
@@ -309,6 +419,12 @@ function paintHistoryChart(history) {
   });
 }
 
+/**
+ * Creates a history list in the sidebar.
+ *
+ * @param {Array} history - An array of history items to be displayed.
+ * @return {void} This function does not return a value.
+ */
 function createHistoryList(history) {
   history.forEach((result) => {
     const child = document.createElement("li");
@@ -319,8 +435,16 @@ function createHistoryList(history) {
 
 // Utility functions
 
-function getChartPointBottom(clicks, lowest, highest) {
-  const clicksDiff = clicks - lowest;
+/**
+ * Calculates the vertical position of a chart point.
+ *
+ * @param {number} score - The number of successful clicks.
+ * @param {number} lowest - The lowest historic score.
+ * @param {number} highest - The highest historic score.
+ * @return {string} The CSS calc expression representing the bottom position of the chart point.
+ */
+function getChartPointBottom(score, lowest, highest) {
+  const clicksDiff = score - lowest;
   const totalDiff = highest - lowest;
   if (totalDiff === 0) return `calc(100% - 30px)`;
 
@@ -328,14 +452,30 @@ function getChartPointBottom(clicks, lowest, highest) {
   return `calc(${pcnt}% - ${(40 * pcnt) / 100 - 10}px)`;
 }
 
+/**
+ * Generates a random integer between 0 (inclusive) and the specified maximum (exclusive).
+ *
+ * @param {number} max - The exclusive upper bound of the random integer to be generated.
+ * @return {number} A random integer between 0 and max (exclusive).
+ */
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
+/**
+ * Returns a random color from the COLORS array.
+ *
+ * @return {string} A randomly selected color from the COLORS array.
+ */
 function getRandomColor() {
   return COLORS[getRandomInt(COLORS.length)];
 }
 
+/**
+ * Generates a random x and y coordinate within the boundaries of the practiceBoard.
+ *
+ * @return {Object} An object containing randomly generated x and y coordinates.
+ */
 function getRandomXY() {
   return {
     x: getRandomInt(practiceBoard.offsetWidth),
@@ -343,6 +483,12 @@ function getRandomXY() {
   };
 }
 
+/**
+ * Calculates the x and y coordinates of a click on the practice board.
+ *
+ * @param {Event} event - The client event object.
+ * @return {Object} An object containing the x and y coordinates.
+ */
 function getBoardXY(event) {
   const rect = practiceBoard.getBoundingClientRect();
   return {
@@ -351,6 +497,12 @@ function getBoardXY(event) {
   };
 }
 
+/**
+ * Generates a result text based on the given result.
+ *
+ * @param {Array} result - An array containing the number of clicks and accuracy percentage.
+ * @return {string} The result text in the format "X Clicks, Y% Accuracy".
+ */
 function getResultText(result) {
   return `${result[0]} Clicks, ${result[1]}% Accuracy`;
 }
@@ -370,7 +522,9 @@ if (hideWelcome !== null) {
 }
 
 if (!!history && !!history.length) {
-  if (history.length > 10) history.splice(10);
+  if (historyStorage.length > 10) {
+    while (historyStorage.length > 10) historyStorage.shift();
+  }
   setState("history", historyStorage);
   createHistoryList(historyStorage);
   paintHistoryChart(historyStorage);
