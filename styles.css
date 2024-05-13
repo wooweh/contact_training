@@ -31,6 +31,7 @@ body {
 }
 
 main {
+  min-width: 1450px;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -100,7 +101,7 @@ main {
   align-items: center;
   background: black;
   color: var(--medium);
-  padding: 10px 40px;
+  padding: 10px 0px 10px 40px;
   box-sizing: border-box;
 }
 
@@ -127,12 +128,10 @@ main {
 }
 
 #history {
-  width: 25%;
-  min-width: 590px;
+  width: 875px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  flex: 1;
   background: black;
   padding-right: 20px;
 }
@@ -202,9 +201,14 @@ main {
 #chart-y-label {
   display: flex;
   justify-content: center;
+  white-space: nowrap;
   flex: 1;
   align-items: center;
   transform: rotate(-90deg);
+}
+
+#chart-y-label-accuracy {
+  color: hsl(240, 100%, 75%);
 }
 
 #chart-x-label {
@@ -243,13 +247,22 @@ main {
   border-radius: 50%;
   background: var(--light);
   position: absolute;
+  z-index: 100;
+}
+
+.chart-accuracy-bar {
+  position: absolute;
+  width: 20px;
+  bottom: 0;
+  background: blue;
+  opacity: 25%;
 }
 
 /* PRACTICE */
 
 #practice {
   width: calc(100% - 50px);
-  min-width: 700px;
+  min-width: 800px;
   height: 100%;
   display: flex;
   flex-direction: column;

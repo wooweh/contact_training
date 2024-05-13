@@ -3,11 +3,11 @@
 // Constants
 
 const COLORS = ["red", "green", "blue", "yellow", "purple", "orange"];
-
+const TIME = 15; // Used for timer initial display and session duration
+ 
 const hideWelcome = getStorage("hideWelcome");
 const historyStorage = getStorage("history");
 
-const TIME = 15;
 
 // Application state
 const state = {
@@ -260,7 +260,8 @@ function saveToHistory() {
   if (history.length > 9) {
     while (history.length > 9) history.shift();
   }
-  const newHistory = [...history].push(result);
+  const newHistory = [...history];
+  newHistory.push(result);
   clearHistory();
   createHistoryList(newHistory);
   paintHistoryChart(newHistory);
@@ -291,6 +292,7 @@ function clearHistory() {
  * @return {void} This function does not return a value.
  */
 function resetPractice() {
+  clearDot();
   show(startButton);
   hide(pauseButton);
   hide(pauseOptions);
@@ -414,7 +416,12 @@ function paintHistoryChart(history) {
     const bottomPercentage = getChartPointBottom(result[0], lowest, highest);
     chartPoint.style.bottom = bottomPercentage;
 
+    const accuracyBar = document.createElement("div");
+    accuracyBar.classList.add("chart-accuracy-bar");
+    accuracyBar.style.height = `${result[1]}%`;
+
     chartPointContainer.appendChild(chartPoint);
+    chartPointContainer.appendChild(accuracyBar);
     historyChart.appendChild(chartPointContainer);
   });
 }
