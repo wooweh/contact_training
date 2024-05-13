@@ -3,11 +3,10 @@
 // Constants
 
 const COLORS = ["red", "green", "blue", "yellow", "purple", "orange"];
-const TIME = 15; // Used for timer initial display and session duration
- 
+const TIME = 5; // Used for timer initial display and session duration
+
 const hideWelcome = getStorage("hideWelcome");
 const historyStorage = getStorage("history");
-
 
 // Application state
 const state = {
@@ -246,7 +245,8 @@ function successClick() {
 }
 
 /**
- * Saves the current training session results to history and resets the practice.
+ * Saves the current training session
+ * s to history and resets the practice.
  *
  * @return {void}
  */
@@ -255,7 +255,7 @@ function saveToHistory() {
   const pClicks = getState("practiceClicks");
   const sClicks = getState("successClicks");
   const accuracy = pClicks > 0 ? Math.floor((sClicks / pClicks) * 100) : 0;
-  const result = [sClicks, accuracy];
+  const result = { clicks: sClicks, accuracy };
 
   if (history.length > 9) {
     while (history.length > 9) history.shift();
@@ -384,7 +384,7 @@ function clearDot() {
 /**
  * Creates a history chart in the sidebar.
  *
- * @param {Array} history - The history data to be visualized.
+ * @param {{ clicks: number, accuracy: number }[]} history - The history data to be visualized.
  * @return {void} This function does not return a value.
  */
 function paintHistoryChart(history) {
@@ -392,8 +392,8 @@ function paintHistoryChart(history) {
   let lowest = Infinity;
 
   history.forEach((result) => {
-    if (result[0] > highest) highest = result[0];
-    if (result[0] < lowest) lowest = result[0];
+    if (result.clicks > highest) highest = result.clicks;
+    if (result.clicks < lowest) lowest = result.clicks;
   });
 
   while (historyChart.hasChildNodes()) {
@@ -413,12 +413,16 @@ function paintHistoryChart(history) {
 
     const chartPoint = document.createElement("div");
     chartPoint.classList.add("chart-point");
-    const bottomPercentage = getChartPointBottom(result[0], lowest, highest);
+    const bottomPercentage = getChartPointBottom(
+      result.clicks,
+      lowest,
+      highest
+    );
     chartPoint.style.bottom = bottomPercentage;
 
     const accuracyBar = document.createElement("div");
     accuracyBar.classList.add("chart-accuracy-bar");
-    accuracyBar.style.height = `${result[1]}%`;
+    accuracyBar.style.height = `${result.accuracy}%`;
 
     chartPointContainer.appendChild(chartPoint);
     chartPointContainer.appendChild(accuracyBar);
@@ -507,11 +511,11 @@ function getBoardXY(event) {
 /**
  * Generates a result text based on the given result.
  *
- * @param {Array} result - An array containing the number of clicks and accuracy percentage.
+ * @param {{clicks: number, accuracy: number}} result - An object containing the number of clicks and accuracy percentage.
  * @return {string} The result text in the format "X Clicks, Y% Accuracy".
  */
 function getResultText(result) {
-  return `${result[0]} Clicks, ${result[1]}% Accuracy`;
+  return `${result.clicks} Clicks, ${result.accuracy}% Accuracy`;
 }
 
 // Initial setup
